@@ -35,5 +35,9 @@ public class ListaLancamentosPage {
                 lancamentos.contains(dataHora.format(formatoDataLancamento)) &&
                 lancamentos.contains(tipo.getDescricao()));
     }
+
+    public boolean acessouRelatorio(){
+        return driver.getPageSource().contains("Dashboard");
+    }
 }
 
