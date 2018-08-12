@@ -91,20 +91,32 @@ public class LancamentoPage {
 
     private LancamentoRow buscarLancamentoNaTabela(LancamentoRow lancamento){
 
-        WebElement tabela = driver.findElement(By.id("tabelaLancamentos"));
-        WebElement tbody = tabela.findElement(By.tagName("tbody"));
-        List<WebElement> linhas = tbody.findElements(By.tagName("tr"));
         LancamentoRow lancamentoRowBusca = null;
 
-        for(WebElement linha : linhas){
-            List<WebElement> colunas = linha.findElements(By.tagName("td"));
-            LancamentoRow lancamentoRow = new LancamentoRow(colunas.get(0).getText(), colunas.get(1).getText(),colunas.get(2).getText(),
-                    colunas.get(3).getText(), colunas.get(4).getText(), colunas.get(5));
-            if (comparaLancamento(lancamentoRow, lancamento)){
-                lancamentoRowBusca = lancamentoRow;
-                break;
+        WebElement ul = driver.findElement(By.id("paginacao"));
+        List<WebElement> li_array = ul.findElements(By.tagName("li"));
+
+        int nPagina = 1;
+        for(WebElement li : li_array){
+            WebElement a = driver.findElement(By.id("pagina"+nPagina));
+            a.click();
+
+            WebElement tabela = driver.findElement(By.id("tabelaLancamentos"));
+            WebElement tbody = tabela.findElement(By.tagName("tbody"));
+            List<WebElement> linhas = tbody.findElements(By.tagName("tr"));
+
+            for(WebElement linha : linhas){
+                List<WebElement> colunas = linha.findElements(By.tagName("td"));
+                LancamentoRow lancamentoRow = new LancamentoRow(colunas.get(0).getText(), colunas.get(1).getText(),colunas.get(2).getText(),
+                        colunas.get(3).getText(), colunas.get(4).getText(), colunas.get(5));
+                if (comparaLancamento(lancamentoRow, lancamento)){
+                    lancamentoRowBusca = lancamentoRow;
+                    return lancamentoRowBusca;
+                }
             }
+            nPagina++;
         }
+
 
         return lancamentoRowBusca;
 
@@ -270,6 +282,37 @@ public class LancamentoPage {
         }
 
         return false;
+    }
+
+    public boolean lancamentoEstaNaLista(LancamentoRow lancamento){
+
+        LancamentoRow lancamentoRowBusca = null;
+
+        WebElement ul = driver.findElement(By.id("paginacao"));
+        List<WebElement> li_array = ul.findElements(By.tagName("li"));
+
+        int nPagina = 1;
+        for(WebElement li : li_array){
+            WebElement a = driver.findElement(By.id("pagina"+nPagina));
+            a.click();
+
+            WebElement tabela = driver.findElement(By.id("tabelaLancamentos"));
+            WebElement tbody = tabela.findElement(By.tagName("tbody"));
+            List<WebElement> linhas = tbody.findElements(By.tagName("tr"));
+
+            for(WebElement linha : linhas){
+                List<WebElement> colunas = linha.findElements(By.tagName("td"));
+                LancamentoRow lancamentoRow = new LancamentoRow(colunas.get(0).getText(), colunas.get(1).getText(),colunas.get(2).getText(),
+                        colunas.get(3).getText(), colunas.get(4).getText(), colunas.get(5));
+                if (comparaLancamento(lancamentoRow, lancamento)){
+                    return true;
+                }
+            }
+            nPagina++;
+        }
+
+        return false;
+
     }
 
 }

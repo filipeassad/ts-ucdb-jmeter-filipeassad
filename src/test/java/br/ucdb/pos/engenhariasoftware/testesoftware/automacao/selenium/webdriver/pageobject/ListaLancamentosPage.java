@@ -39,5 +39,6 @@ public class ListaLancamentosPage {
     public boolean acessouRelatorio(){
         return driver.getPageSource().contains("Dashboard");
     }
+
 }
 

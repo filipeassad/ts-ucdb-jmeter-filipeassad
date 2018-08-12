@@ -1,9 +1,6 @@
 package br.ucdb.pos.engenhariasoftware.testesoftware.automacao.selenium.webdriver;
 
-import br.ucdb.pos.engenhariasoftware.testesoftware.automacao.selenium.webdriver.pageobject.Categoria;
-import br.ucdb.pos.engenhariasoftware.testesoftware.automacao.selenium.webdriver.pageobject.LancamentoPage;
-import br.ucdb.pos.engenhariasoftware.testesoftware.automacao.selenium.webdriver.pageobject.ListaLancamentosPage;
-import br.ucdb.pos.engenhariasoftware.testesoftware.automacao.selenium.webdriver.pageobject.TipoLancamento;
+import br.ucdb.pos.engenhariasoftware.testesoftware.automacao.selenium.webdriver.pageobject.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -69,7 +66,14 @@ public class LancamentoTest {
         Categoria categoria = lancamentoPage.obterOptionParaSelecionar();
         lancamentoPage.cria(descricaoLancamento, valor, dataHora, tipoLancamento, categoria);
 
-        assertTrue(listaLancamentosPage.existeLancamento(descricaoLancamento, valor, dataHora, tipoLancamento));
+        boolean lancamentoExiste = lancamentoPage.lancamentoEstaNaLista(new LancamentoRow(descricaoLancamento,
+                categoria.getTexto(),
+                dataHora.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                String.valueOf(valor).replaceAll("\\.", ","),
+                tipoLancamento.getDescricao(),
+                null ));
+
+        assertTrue(lancamentoExiste, "Lançamento não está na tabela.");
     }
 
     @Test
@@ -87,7 +91,15 @@ public class LancamentoTest {
         Categoria categoria = lancamentoPage.obterOptionParaSelecionar();
 
         lancamentoPage.cria(descricaoLancamento, valor, dataHora, tipoLancamento, categoria);
-        assertTrue(listaLancamentosPage.existeLancamento(descricaoLancamento, valor, dataHora, tipoLancamento));
+
+        boolean lancamentoExiste = lancamentoPage.lancamentoEstaNaLista(new LancamentoRow(descricaoLancamento,
+                categoria.getTexto(),
+                dataHora.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                String.valueOf(valor).replaceAll("\\.", ","),
+                tipoLancamento.getDescricao(),
+                null ));
+
+        assertTrue(lancamentoExiste, "Lançamento não está na tabela.");
 
         lancamentoPage.acessarEditar(descricaoLancamento, valor, dataHora, tipoLancamento, categoria);
 
@@ -95,7 +107,14 @@ public class LancamentoTest {
 
         lancamentoPage.cria(descricaoLancamento, valor, dataHora, tipoLancamento, categoria);
 
-        assertTrue(listaLancamentosPage.existeLancamento(descricaoLancamento, valor, dataHora, tipoLancamento));
+        lancamentoExiste = lancamentoPage.lancamentoEstaNaLista(new LancamentoRow(descricaoLancamento,
+                categoria.getTexto(),
+                dataHora.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                String.valueOf(valor).replaceAll("\\.", ","),
+                tipoLancamento.getDescricao(),
+                null ));
+
+        assertTrue(lancamentoExiste, "Lançamento não está na tabela.");
 
     }
 
@@ -114,18 +133,41 @@ public class LancamentoTest {
         Categoria categoria = lancamentoPage.obterOptionParaSelecionar();
 
         lancamentoPage.cria(descricaoLancamento, valor, dataHora, tipoLancamento, categoria);
-        assertTrue(listaLancamentosPage.existeLancamento(descricaoLancamento, valor, dataHora, tipoLancamento));
+
+        boolean lancamentoExiste = lancamentoPage.lancamentoEstaNaLista(new LancamentoRow(descricaoLancamento,
+                categoria.getTexto(),
+                dataHora.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                String.valueOf(valor).replaceAll("\\.", ","),
+                tipoLancamento.getDescricao(),
+                null ));
+
+        assertTrue(lancamentoExiste, "Lançamento não está na tabela.");
 
         lancamentoPage.acessarEditar(descricaoLancamento, valor, dataHora, tipoLancamento, categoria);
 
         descricaoLancamento = "Lançamento editado. " + dataHora.format(formatoLancamento);
 
         lancamentoPage.cria(descricaoLancamento, valor, dataHora, tipoLancamento, categoria);
-        assertTrue(listaLancamentosPage.existeLancamento(descricaoLancamento, valor, dataHora, tipoLancamento));
+
+        lancamentoExiste = lancamentoPage.lancamentoEstaNaLista(new LancamentoRow(descricaoLancamento,
+                categoria.getTexto(),
+                dataHora.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                String.valueOf(valor).replaceAll("\\.", ","),
+                tipoLancamento.getDescricao(),
+                null ));
+
+        assertTrue(lancamentoExiste, "Lançamento não está na tabela.");
 
         lancamentoPage.excluirLancamento(descricaoLancamento, valor, dataHora, tipoLancamento, categoria);
 
-        assertFalse(listaLancamentosPage.existeLancamento(descricaoLancamento, valor, dataHora, tipoLancamento));
+        lancamentoExiste = lancamentoPage.lancamentoEstaNaLista(new LancamentoRow(descricaoLancamento,
+                categoria.getTexto(),
+                dataHora.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                String.valueOf(valor).replaceAll("\\.", ","),
+                tipoLancamento.getDescricao(),
+                null ));
+
+        assertFalse(lancamentoExiste, "Lançamento está na tabela.");
 
     }
 
@@ -144,7 +186,7 @@ public class LancamentoTest {
         Categoria categoria = lancamentoPage.obterOptionParaSelecionar();
 
         lancamentoPage.cria(descricaoLancamento, valor, dataHora, tipoLancamento, categoria);
-        assertTrue(listaLancamentosPage.existeLancamento(descricaoLancamento, valor, dataHora, tipoLancamento));
+        //assertTrue(listaLancamentosPage.existeLancamento(descricaoLancamento, valor, dataHora, tipoLancamento));
 
         HashMap<String, BigDecimal> totaisCalculados = lancamentoPage.calcularTotais();
         HashMap<String, BigDecimal> totaisObtidos = lancamentoPage.totalEntradaSaida();
