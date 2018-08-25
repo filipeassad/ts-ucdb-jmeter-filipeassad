@@ -1,0 +1,7 @@
+﻿Antes de executar os teste:
+
+- Favor limpar a base para executar os teste.
+
+- Os plugins utilizados foram os solicitados no trabalho.
+
+- Se o a jmeter-plugins.org estiver instalado, ele instala os outro plugins necessários.
